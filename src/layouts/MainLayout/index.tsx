@@ -9,7 +9,7 @@ export default function MainLayout() {
   return (
     <>
       <Header />
-      <Stack height={'100vh'} width={'100%'} >
+      <Stack justifyContent={'space-between'} minHeight={'calc(100vh - 93px)'} width={'100%'} >
         <Outlet />
         <Footer />
       </Stack>

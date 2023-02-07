@@ -16,7 +16,7 @@ export default function Page({title, children}: PageProps) {
         <title>{title}</title>
       </Helmet>
 
-      <Stack height={'100%'} px={{ xl: '32%', lg: '20%', sm: '16%' }} py={6} >
+      <Stack height={'100%'} px={{ xl: '32%', lg: '20%', md: '14%' , sm: '8%', xs: 1 }} py={6} >
         {children}
       </Stack>
 
