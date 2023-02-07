@@ -1,11 +1,12 @@
 import { lazy, ReactNode, Suspense, ElementType } from 'react';
 import { useRoutes, Navigate } from 'react-router-dom';
+import LoadingScreen from '../components/LoadingScreen';
 import MainLayout from '../layouts/MainLayout';
 
 
 const load = (Component: ElementType) => () => {
   return (
-    <Suspense fallback={<>Loading</>} >
+    <Suspense fallback={<LoadingScreen />} >
       <Component />
     </Suspense>
   )
