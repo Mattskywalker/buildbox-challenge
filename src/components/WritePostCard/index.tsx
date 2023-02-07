@@ -24,10 +24,10 @@ export default function WritePostCard() {
 
   const {savePost} = useContext(PostContext);
 
-  const [imageBlob, setImageBlob] = useState<File | null>(null);
+  const [imageBlob, setImageBlob] = useState<File>();
   const [imagePath, setImagePath] = useState<string>('')
 
-  function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
     setImagePath(e.target.value);
     const files = e.target.files;
     if (!files || files.length === 0) { return }
@@ -36,9 +36,14 @@ export default function WritePostCard() {
   }
 
   function handleRemoveImage() {
-    setImageBlob(null);
+    setImageBlob(undefined);
     setImagePath('')
     handleChange('imageUrl')('');
+  }
+
+  function handleDiscart() {
+    handleRemoveImage();
+    resetForm();
   }
 
   const formik = useFormik<PostModel>({
@@ -52,13 +57,13 @@ export default function WritePostCard() {
     validateOnChange: true,
     initialTouched: {},
     onSubmit: async (values, { setSubmitting }) => {
-      savePost(values)
+      savePost(values, imageBlob)
     }
   });
 
-  
-  const { values, handleChange, errors, touched, setFieldTouched, handleSubmit } = formik
+  const { values, handleChange, errors, touched, setFieldTouched, handleSubmit, resetForm } = formik
   const imageIsEmpty = values.imageUrl === '';
+
   return (
     <Card gap={1} >
       <Stack alignItems={'center'} flexDirection={'row'} width={'100%'} >
@@ -105,8 +110,8 @@ export default function WritePostCard() {
         <HelperText showError={!!errors.message && touched.message } message={errors.message} />
       </FormikProvider>
 
-      <Stack pt={2} gap={2} width={'100%'} flexDirection={'row'} alignItems={'center'} justifyContent='flex-end' className={'area-button'} >
-        <Link onClick={() => { alert('ok') }} >Descartar</Link>
+      <Stack pt={2} gap={4} width={'100%'} flexDirection={'row'} alignItems={'center'} justifyContent='flex-end' className={'area-button'} >
+        <Link onClick={() => { handleDiscart() }} >Descartar</Link>
         <Button onClick={() => handleSubmit()} >Publicar</Button>
       </Stack>
     </Card>
