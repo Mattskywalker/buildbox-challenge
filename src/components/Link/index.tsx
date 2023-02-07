@@ -4,9 +4,9 @@ import { styled } from "@mui/material";
 const Link = styled('a')(({theme}) => ({
   textDecoration: 'underline',
   cursor: 'pointer',
-  width: '60px',
+  // width: '60px',
   height: '17px',
-  margin: '12px 24px 12px 0',
+  // margin: '12px 24px 12px 0',
   fontFamily: 'Roboto',
   fontSize: '14px',
   fontWeight: 'normal',
