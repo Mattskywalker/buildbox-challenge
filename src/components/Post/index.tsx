@@ -19,13 +19,13 @@ export default function Post({ post }: PostProps) {
 
   return (
     <Card>
-      <Stack width={'100%'} height={'56px'} alignItems={'flex-end'} >
+      <Stack width={'100%'} height={{sm: '56px'}} alignItems={'flex-end'} >
         <IconButton onClick={() => removePost(post)} >
           <Close />
         </IconButton>
       </Stack>
-      <Stack width={'100%'} flexDirection={'row'} >
-        <Stack pr={4} >
+      <Stack gap={4} width={'100%'} flexDirection={{sm: 'row', xs: 'column'}} >
+        <Stack >
           <IconButton style={{ padding: 0 }} aria-label="upload picture" component="label" >
             <Stack
               overflow={'hidden'}
