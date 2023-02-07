@@ -4,12 +4,15 @@ import './App.css';
 import Router from './routes';
 import Header from './layouts/MainLayout/Header';
 import MainLayout from './layouts/MainLayout';
+import PostProvider from './Context/PostContext';
 
 
 function App() {
   return (
     <>
-      <Router />
+      <PostProvider>
+        <Router />
+      </PostProvider>
     </>
   );
 }
