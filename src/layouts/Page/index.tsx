@@ -16,7 +16,7 @@ export default function Page({title, children}: PageProps) {
         <title>{title}</title>
       </Helmet>
 
-      <Stack bgcolor={'#343434'} height={'100%'}>
+      <Stack height={'100%'} px={{ xl: '32%', lg: '20%', sm: '16%' }} py={6} >
         {children}
       </Stack>
 
