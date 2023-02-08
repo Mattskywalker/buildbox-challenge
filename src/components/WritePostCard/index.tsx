@@ -1,4 +1,4 @@
-import { IconButton, Stack, styled, TextField } from '@mui/material'
+import { CircularProgress, IconButton, Stack, styled, TextField, Typography } from '@mui/material'
 import React, { ChangeEvent, useContext, useState } from 'react'
 import Trash from '../../assets/icons/Trash'
 import Image from '../../assets/Image'
@@ -22,7 +22,7 @@ const schema = yup.object().shape({
 
 export default function WritePostCard() {
 
-  const {savePost} = useContext(PostContext);
+  const { savePost, postLoading } = useContext(PostContext);
 
   const [imageBlob, setImageBlob] = useState<File>();
   const [imagePath, setImagePath] = useState<string>('')
@@ -58,6 +58,10 @@ export default function WritePostCard() {
     initialTouched: {},
     onSubmit: async (values, { setSubmitting }) => {
       savePost(values, imageBlob)
+        .then(() => {
+          handleRemoveImage()
+          resetForm();
+        })
     }
   });
 
@@ -100,19 +104,27 @@ export default function WritePostCard() {
           style={{ marginTop: '16px' }}
           placeholder='Digite seu nome'
         />
-        <HelperText showError={!!errors.author && touched.author } message={errors.author} />
+        <HelperText showError={!!errors.author && touched.author} message={errors.author} />
 
         <TextArea
           onBlur={() => setFieldTouched('message')}
           value={values.message}
           onChange={handleChange('message')}
           placeholder='Mensagem' />
-        <HelperText showError={!!errors.message && touched.message } message={errors.message} />
+        <HelperText showError={!!errors.message && touched.message} message={errors.message} />
       </FormikProvider>
 
       <Stack pt={2} gap={4} width={'100%'} flexDirection={'row'} alignItems={'center'} justifyContent='flex-end' className={'area-button'} >
         <Link onClick={() => { handleDiscart() }} >Descartar</Link>
-        <Button onClick={() => handleSubmit()} >Publicar</Button>
+        <Button disabled={postLoading} type='submit' onClick={() => handleSubmit()} >
+          {!postLoading && <Typography>Publicar</Typography>}
+          {
+            postLoading &&
+              <Stack gap={3} flexDirection={'row'} alignItems={'center'} justifyContent={'center'} >
+                <CircularProgress size={'32px'} color='warning' /> <Typography>Publicando</Typography>
+              </Stack>
+          }
+        </Button>
       </Stack>
     </Card>
   )
