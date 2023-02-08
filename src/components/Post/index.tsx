@@ -9,6 +9,7 @@ import Card from '../Card'
 
 import { Image as ImageMaterial } from '@mui/icons-material'
 import { toast } from 'react-toastify';
+import AlertDialog from '../AlertDialog';
 
 interface PostProps {
   post: PostModel
@@ -22,6 +23,8 @@ function Post({ post }: PostProps) {
 
   const [deletingPost, setDeletingPost] = useState(false);
 
+  const [open, setAlertOpen] = React.useState(false);
+
   function handleRemovePost() {
     setDeletingPost(true);
     removePost(post)
@@ -33,12 +36,13 @@ function Post({ post }: PostProps) {
   }
 
   return (
+
     <Card>
       <Stack justifyContent={'space-between'} flexDirection={'row'} width={'100%'} height={{ sm: '42px' }} alignItems={'flex-start'} >
         {deletingPost && <CircularProgress color='error' size={'24px'} />}
         {isImageLoading && !imageError && <CircularProgress color='success' size={'24px'} />}
         <span />
-        <IconButton disabled={deletingPost} onClick={() => handleRemovePost()} >
+        <IconButton disabled={deletingPost} onClick={() => setAlertOpen(true)} >
           <Close />
         </IconButton>
       </Stack>
@@ -64,7 +68,7 @@ function Post({ post }: PostProps) {
               <img
                 hidden={imageError || isImageLoading}
                 onLoad={() => setImageLoading(false)}
-                onError={() => {setImageLoading(false); setImageError(true)}}
+                onError={() => { setImageLoading(false); setImageError(true) }}
                 width={'100%'}
                 src={post.imageUrl} alt={'message image'}
               />
@@ -74,7 +78,7 @@ function Post({ post }: PostProps) {
         </Stack>
         <Stack width={'100%'} flex={1} gap={5} flexDirection={'column'} >
           <Stack width={'100%'} >
-            <Typography style={{wordWrap: 'break-word', wordBreak: 'break-all'}} color={'#9f9f9f'}>
+            <Typography style={{ wordWrap: 'break-word', wordBreak: 'break-all' }} color={'#9f9f9f'}>
               {post.message}
             </Typography>
           </Stack>
@@ -89,6 +93,17 @@ function Post({ post }: PostProps) {
           </Stack>
         </Stack>
       </Stack>
+      <AlertDialog
+        loading={deletingPost}
+        acceptLoadingMessage={'Removendo'}
+        isOpen={open}
+        acceptButtonLabel='Remover'
+        declineButtonLabel='Cancelar'
+        onAccept={() => {handleRemovePost()}}
+        onClose={() => {setAlertOpen(false)}}
+        title={'Remover Post'}
+        message={`Deseja remover este post de ${post.author}? se removido não poderá mais ser recuperado!`}
+      />
     </Card>
   )
 }

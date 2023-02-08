@@ -13,6 +13,7 @@ import { FormikProvider, useFormik } from 'formik'
 import { PostModel } from '../../Interfaces/PostInterfaces'
 import HelperText from '../HelperText'
 import { PostContext } from '../../Context/PostContext'
+import AlertDialog from '../AlertDialog'
 
 
 const schema = yup.object().shape({
@@ -25,7 +26,9 @@ export default function WritePostCard() {
   const { savePost, postLoading } = useContext(PostContext);
 
   const [imageBlob, setImageBlob] = useState<File>();
-  const [imagePath, setImagePath] = useState<string>('')
+  const [imagePath, setImagePath] = useState<string>('');
+
+  const [discartAlert, setDiscartAlert] = useState(false);
 
   async function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
     setImagePath(e.target.value);
@@ -44,6 +47,7 @@ export default function WritePostCard() {
   function handleDiscart() {
     handleRemoveImage();
     resetForm();
+    setDiscartAlert(false)
   }
 
   const formik = useFormik<PostModel>({
@@ -115,17 +119,26 @@ export default function WritePostCard() {
       </FormikProvider>
 
       <Stack pt={2} gap={4} width={'100%'} flexDirection={'row'} alignItems={'center'} justifyContent='flex-end' className={'area-button'} >
-        <Link onClick={() => { handleDiscart() }} >Descartar</Link>
+        <Link onClick={() => { Object.keys(errors).length > 0 && setDiscartAlert(true) }} >Descartar</Link>
         <Button disabled={postLoading} type='submit' onClick={() => handleSubmit()} >
           {!postLoading && <Typography>Publicar</Typography>}
           {
             postLoading &&
-              <Stack gap={3} flexDirection={'row'} alignItems={'center'} justifyContent={'center'} >
-                <CircularProgress size={'32px'} color='warning' /> <Typography>Publicando</Typography>
-              </Stack>
+            <Stack gap={3} flexDirection={'row'} alignItems={'center'} justifyContent={'center'} >
+              <CircularProgress size={'32px'} color='warning' /> <Typography>Publicando</Typography>
+            </Stack>
           }
         </Button>
       </Stack>
+      <AlertDialog
+        isOpen={discartAlert}
+        acceptButtonLabel='Descartar'
+        declineButtonLabel='Cancelar'
+        onAccept={() => { handleDiscart() }}
+        onClose={() => { setDiscartAlert(false) }}
+        title={'Descartar'}
+        message={`Deseja descartar tudo?`}
+      />
     </Card>
   )
 }
