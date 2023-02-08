@@ -52,7 +52,7 @@ export default function AlertDialog({ message, title, acceptButtonLabel, decline
             { loading && <Stack gap={2} flexDirection={'row'} >
               <CircularProgress color={'info'} size={'24px'} />{acceptLoadingMessage}
             </Stack>}
-            {acceptButtonLabel}
+            { !loading && acceptButtonLabel}
           </Button>
         </DialogActions>
       </Dialog>

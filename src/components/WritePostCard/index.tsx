@@ -119,7 +119,7 @@ export default function WritePostCard() {
       </FormikProvider>
 
       <Stack pt={2} gap={4} width={'100%'} flexDirection={'row'} alignItems={'center'} justifyContent='flex-end' className={'area-button'} >
-        <Link onClick={() => { Object.keys(errors).length > 0 && setDiscartAlert(true) }} >Descartar</Link>
+        <Link onClick={() => { Object.keys(errors).length === 0 && setDiscartAlert(true) }} >Descartar</Link>
         <Button disabled={postLoading} type='submit' onClick={() => handleSubmit()} >
           {!postLoading && <Typography>Publicar</Typography>}
           {
