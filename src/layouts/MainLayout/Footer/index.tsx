@@ -24,7 +24,7 @@ export default function Footer() {
           <Typography color={'#9f9f9f'} variant={'button'} > Mateus Martins</Typography>
         </Stack>
         <Stack flex={1} alignItems={{xs: 'flex-end', sm: 'flex-start'}} >
-          <Typography color={'#9f9f9f'} variant={'button'} >Creditos</Typography>
+          <Typography color={'#9f9f9f'} variant={'button'} >Créditos</Typography>
           <Link href="https://www.flaticon.com/free-icons/box" title="box icons">Box icons created by Freepik - Flaticon</Link>
         </Stack>
       </Stack>
