@@ -8,6 +8,8 @@ import { PostContext } from '../../Context/PostContext'
 import Page from '../../layouts/Page'
 
 import EmptyIcon from '../../assets/images/package.png'
+import { TransitionGroup } from 'react-transition-group'
+import { Collapse } from '@mui/material'
 
 export default function Home() {
 
@@ -21,22 +23,24 @@ export default function Home() {
       <Stack pt={8} >
         <Typography color={'#9f9f9f'} >Feed</Typography>
 
-        <Stack style={{ transition: '2s' }} gap={2} >
-          {
-            getPosts().map((value, index) => (
-              <Post
-                post={value}
-                key={index}
-              />
-            ))
-          }
-          {
-            getPosts().length === 0 &&
-            <Stack pt={3} flexDirection={'row'} alignItems={'center'} gap={2}>
-              <img src={EmptyIcon} width={'42px'} />
-              <Typography color={'#9f9f9f'} >Nada para exibir agora. 😥</Typography>
+        <Stack style={{ transition: '2s' }} gap={2} paddingTop={2} >
+          <TransitionGroup>
+            {
+              getPosts().map((value) => (
+                <Collapse key={value.id}>
+                  <Stack key={value.id} pt={2}>
+                    <Post key={value.id} post={value} />
+                  </Stack>
+                </Collapse>
+              ))
+            }
+          </TransitionGroup>
+          <Collapse in={getPosts().length === 0} >
+            <Stack sx={{ '&:hover': { transform: 'scale(1.1)', transition: 'all 0.2s' } }} flexDirection={'column'} alignItems={'center'} gap={2}>
+              <img src={EmptyIcon} width={'52px'} />
+              <Typography color={'#9f9f9f'} variant={'caption'} >Nada para exibir agora. 😥</Typography>
             </Stack>
-          }
+          </Collapse>
         </Stack>
       </Stack>
     </Page>
